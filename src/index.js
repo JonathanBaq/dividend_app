@@ -4,51 +4,62 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-//Do tasks here
-const dividendApp = async () => {
-  const companiesUrl = 'https://gist.githubusercontent.com/VincentLeV/a0c326b9cbeabf63b4e5e02aa9779f6c/raw/b916a9e3d40aef926bf7e3b9b4db308d7da1ca5d/shares.json'
+//2.Use fetch-api to fetch JSON
+const companiesUrl = 'https://gist.githubusercontent.com/VincentLeV/a0c326b9cbeabf63b4e5e02aa9779f6c/raw/b916a9e3d40aef926bf7e3b9b4db308d7da1ca5d/shares.json'
 
-  //2.Use fetch-api to establish connection to JSON
-  const fetchCOmpanies = async (url) => {
-    const response = await fetch(url);
+const fetchCOmpanies = async (url) => {
+  const response = await fetch(url);
+  if (response.ok) {
     const data = await response.json();
     return data;
+  } else {
+    throw new Error('Bad response')
   }
-  const companies = await fetchCOmpanies(companiesUrl);
-  console.log(companies)
+}
 
-  //3.yeild computation
+//MAIN App
+const dividendApp = async () => {
+  //3.yeild computation function
   const getDividendYield = (company) => {
     const dividendHistory = company.dividendHistory;
     const recentDividend = dividendHistory.filter(dividend => dividend.year === 2021);
-    const dividendYield = recentDividend.map(dividend => (dividend.dividend / company.price) * 100)
+    const dividendYield = recentDividend.map(dividend => (dividend.dividend / company.price) * 100);
 
     return Math.round(dividendYield * 100) / 100;
   }
-  //Array of dividendYield arranged by original order of companies
-  console.log(companies.map(company => getDividendYield(company)));
 
-  //4.average dividend computation (last 5 years)
+  //4.average dividend computation (last 5 years) function 
 
-  //5. Weighted average computation
+  //5. Weighted average computation function
 
-  //**Output data format: array of company objects**
-  const formatOutput = () => {
-    return companies.map(company => ({
-      share: company.share,
-      company: company.company,
-      price: company.price,
-      lastYearDividend: company.dividendHistory[0].dividend,
-      dividendYield: getDividendYield(company),
-      //AveYield: getAveYield(company),
-      //weightedAve: getWeightedAve(company)
-    })
-    )
+  try {
+    const companies = await fetchCOmpanies(companiesUrl);
+    console.log(companies)
+
+    //**Output data format: array of company objects**
+    const getShares = () => {
+      return companies.map(company => ({
+        share: company.share,
+        company: company.company,
+        price: company.price,
+        lastYearDividend: company.dividendHistory[0].dividend,
+        dividendYield: getDividendYield(company),
+        //AveYield: getAveYield(company),
+        //weightedAve: getWeightedAve(company)
+      })
+      )
+    }
+
+    const initialSharesArray = getShares(companies);
+    console.log(initialSharesArray);
+
+    //Final output formatting
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(`Something went wrong, Error: ${error.message}`);
+    }
   }
-
-  const initialSharesArray = formatOutput(companies);
-  console.log(initialSharesArray);
-
 }
 
 dividendApp();
