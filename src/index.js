@@ -23,9 +23,13 @@ const dividendApp = async () => {
   const getDividendYield = (company) => {
     const dividendHistory = company.dividendHistory;
     const yearDividend = dividendHistory.filter(dividend => dividend.year === 2021);
-    const dividendYield = (yearDividend[0].dividend / company.price) * 100;
+    if (yearDividend[0]) {
+      const dividendYield = (yearDividend[0].dividend / company.price) * 100;
+      return Math.round(dividendYield * 100) / 100;
+    } else {
+      throw new Error('Dividend for year does not exist')
+    }
 
-    return Math.round(dividendYield * 100) / 100;
   }
 
   //4.average dividend computation (last 5 years) function 
