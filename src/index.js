@@ -5,19 +5,23 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 //Do tasks here
+const companiesUrl = 'https://gist.githubusercontent.com/VincentLeV/a0c326b9cbeabf63b4e5e02aa9779f6c/raw/b916a9e3d40aef926bf7e3b9b4db308d7da1ca5d/shares.json'
+
 //2.Use fetch-api to establish connection to JSON
-const fetchCOmpanies = () => {
-  const companies = [];
-  fetch('https://gist.githubusercontent.com/VincentLeV/a0c326b9cbeabf63b4e5e02aa9779f6c/raw/b916a9e3d40aef926bf7e3b9b4db308d7da1ca5d/shares.json')
-    .then(response => response.json())
-    .then(data => companies.push(data))
-    .catch(error => console.error(error))
-  return companies;
+const fetchCOmpanies = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
 }
 
 //3.yeild computation
-const companies = fetchCOmpanies();
-console.log(companies);
+const dividendApp = async () => {
+  const companies = await fetchCOmpanies(companiesUrl);
+  console.log(companies)
+  
+}
+
+dividendApp();
 
 //4.average dividend computation (last 5 years)
 
