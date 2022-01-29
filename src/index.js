@@ -18,37 +18,38 @@ const fetchCOmpanies = async (url) => {
 const dividendApp = async () => {
   const companies = await fetchCOmpanies(companiesUrl);
   console.log(companies)
-  
+
+
+
+  //4.average dividend computation (last 5 years)
+
+  //5. Weighted average computation
+
+  //**Output data format: array of company objects**
+  /*   const outputData = [
+      {
+        Share:
+        Company: Company1,
+        Price:
+        Last year dividend: 0.75
+        Dividend yield-%: 2.3
+        Five-year average dividend yield-%: X.Y
+        Five-year weighted average dividend yield-%: W.Z
+      },
+      {
+        Share:
+        Company: Company2,
+        Price:
+        Last year dividend: 0.75
+        Dividend yield-%: 2.3
+        Five-year average dividend yield-%: X.Y
+        Five-year weighted average dividend yield-%: W.Z
+      },
+    ] */
+
 }
 
 dividendApp();
-
-//4.average dividend computation (last 5 years)
-
-//5. Weighted average computation
-
-//**Output data format: array of company objects**
-/*   const outputData = [
-    {
-      Share:
-      Company: Company1,
-      Price:
-      Last year dividend: 0.75
-      Dividend yield-%: 2.3
-      Five-year average dividend yield-%: X.Y
-      Five-year weighted average dividend yield-%: W.Z
-    },
-    {
-      Share:
-      Company: Company2,
-      Price:
-      Last year dividend: 0.75
-      Dividend yield-%: 2.3
-      Five-year average dividend yield-%: X.Y
-      Five-year weighted average dividend yield-%: W.Z
-    },
-  ] */
-
 
 
 
