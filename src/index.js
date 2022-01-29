@@ -4,6 +4,44 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//Do tasks here
+  //2.Use fetch-api to establish connection to JSON
+  //3.yeild computation
+  //4.average dividend computation (last 5 years)
+  //5. Weighted average computation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
