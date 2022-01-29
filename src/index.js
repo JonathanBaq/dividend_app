@@ -22,8 +22,8 @@ const dividendApp = async () => {
   //3.yeild computation function
   const getDividendYield = (company) => {
     const dividendHistory = company.dividendHistory;
-    const recentDividend = dividendHistory.filter(dividend => dividend.year === 2021);
-    const dividendYield = recentDividend.map(dividend => (dividend.dividend / company.price) * 100);
+    const yearDividend = dividendHistory.filter(dividend => dividend.year === 2021);
+    const dividendYield = (yearDividend[0].dividend / company.price) * 100;
 
     return Math.round(dividendYield * 100) / 100;
   }
