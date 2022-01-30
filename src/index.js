@@ -28,43 +28,28 @@ const dividendApp = async () => {
     );
     if (yearDividend[0]) {
       const dividendYield = (yearDividend[0].dividend / company.price) * 100;
-      return Math.round(dividendYield * 100) / 100;
+      console.log(`Dividend yield(2021) of ${company.share} is ${parseFloat(dividendYield.toFixed(2))}`);
+      return parseFloat(dividendYield.toFixed(2));
     } else {
       throw new Error("Dividend for year does not exist");
     }
   };
 
   //4.average dividend computation (last 5 years) function
-  const companies = await fetchCOmpanies(companiesUrl);
-  const getCompanyDividends = () => {
-    const getDividendArray = [
-      companies.map((company) => company.dividendHistory),
-    ];
+  const getAveDividends = (company) => {
+    const dividendArray = company.dividendHistory;
+    const dividends = dividendArray.map(dividends => dividends.dividend)
+    const fiveYearDividends = dividends.filter((dividend, index) => index <= 4)
+    const price = company.price;
+    const initialValue = 0;
 
-    const getPrice = [companies.map((company) => company.price)];
+    const sum = fiveYearDividends.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue;
+    }, initialValue).toFixed(2);
 
-    let sumArray = [];
-
-    getDividendArray.map(function (dividendHistory) {
-      dividendHistory.map(function (dividends) {
-        let initialValue = 0;
-        let sum = dividends
-          .reduce(function (previousValue, currentValue) {
-            return previousValue + currentValue.dividend;
-          }, initialValue)
-          .toFixed(2);
-        sumArray.push(parseFloat(sum));
-      });
-    });
-
-    const prices = getPrice[0];
-    const result = sumArray.map(function (n, i) {
-      return parseFloat((n / 5 / prices[i]).toFixed(2));
-    });
-    console.log("RESULT of 5 Year Average Dividend Yield: ", result);
-  };
-
-  getCompanyDividends();
+    console.log(`Average Yield(5 years) of ${company.share} is ${parseFloat(((sum / 5 / price) * 100).toFixed(2))}`);
+    return parseFloat(((sum / 5 / price) * 100).toFixed(2));
+  }
 
   //5. Weighted average computation function
 
@@ -74,18 +59,21 @@ const dividendApp = async () => {
 
     //**Output data format: array of company objects**
     const getShares = () => {
-      return companies.map((company) => ({
-        share: company.share,
-        company: company.company,
-        price: company.price,
-        lastYearDividend: company.dividendHistory[0].dividend,
-        dividendYield: getDividendYield(company),
-        //AveYield: getAveYield(company),
-        //weightedAve: getWeightedAve(company)
-      }));
+      return companies.map(company => (
+        {
+          share: company.share,
+          company: company.company,
+          price: company.price,
+          lastYearDividend: company.dividendHistory[0].dividend,
+          dividendYield: getDividendYield(company),
+          AveYield: getAveDividends(company),
+          //weightedAve: getWeightedAve(company)
+        }
+      )
+      );
     };
 
-    const initialSharesArray = getShares(companies);
+    const initialSharesArray = await getShares(companies);
     console.log(initialSharesArray);
 
     //Final output formatting
