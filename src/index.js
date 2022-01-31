@@ -38,8 +38,9 @@ const dividendApp = async () => {
   //3.yeild computation function
   const getDividendYield = (company) => {
     const dividendInfo = getDividendInfo(company);
+    const targetYear = new Date().getFullYear() - 1;
     const yearDividend = dividendInfo.dividendHistory.filter(
-      (dividend) => dividend.year === 2021
+      (dividend) => dividend.year === targetYear
     )
 
     if (yearDividend[0]) {
